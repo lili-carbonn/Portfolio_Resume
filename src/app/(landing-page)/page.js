@@ -1,4 +1,6 @@
 import ProjectSection from "./components/ProjectSection";
+import PostsSection from "./components/PostsSection";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -17,15 +19,19 @@ export default function Home() {
           for the Future of Property Tech
         </p>
         <div className="flex mt-10 gap-4">
-          <button className="px-8 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-500">
+          <Link
+            href={`/posts/3`}
+            className="px-8 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-500"
+          >
             About Me
-          </button>
+          </Link>
           <button className="px-8 py-3 rounded-lg border border-gray-600 hover:border-primary-500 font-medium">
             Contact Me
           </button>
         </div>
       </div>
       <ProjectSection />
+      <PostsSection />
     </div>
   );
 }
