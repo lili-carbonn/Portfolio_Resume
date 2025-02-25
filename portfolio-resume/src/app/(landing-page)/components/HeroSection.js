@@ -45,16 +45,19 @@ const HeroSection = () => {
         Leala Carbonneau <span className="block text-primary-600">Data and Computer Science</span>
       </h1>
       <p className="mt-6 text-xl text-gray-300 leading-8">
-        Creative Solutions to Complex Problems | Exploring the AI and Machine Learning Field
+        Creative Solutions to Complex Problems | Exploring AI and Machine Learning
       </p>
       <div className="flex mt-10 gap-4">
         <Link
-          href={`/posts/1`}
-          className="px-8 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-500"
+          href="/posts/1"
+          className="px-8 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-500 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/20 button-hover"
         >
           About Me
         </Link>
-        <Link href={`/posts/2`} className="px-8 py-3 rounded-lg border border-gray-600 hover:border-primary-500 font-medium bg-slate-900">
+        <Link
+          href="/posts/2"
+          className="px-8 py-3 rounded-lg border border-gray-600 hover:border-primary-500 font-medium bg-slate-900 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/20 button-hover"
+        >
           Contact Me
         </Link>
       </div>

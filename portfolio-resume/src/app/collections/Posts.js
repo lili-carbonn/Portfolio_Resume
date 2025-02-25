@@ -30,26 +30,12 @@ export const Posts = {
           value: "content",
         },
       ],
-    },
-    {
-      name: "slug",
-      type: "text",
-      required: true,
-      unique: true,
       admin: {
         position: "sidebar",
       },
     },
   ],
-  hooks: {
-    beforeChange: [
-      ({ data }) => {
-        // If type is about or contact, use that as the slug
-        if (data.type === "about" || data.type === "contact") {
-          data.slug = data.type;
-        }
-        return data;
-      },
-    ],
+  admin: {
+    useAsTitle: "title",
   },
 };
