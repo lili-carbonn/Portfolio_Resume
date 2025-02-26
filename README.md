@@ -1,4 +1,4 @@
-See the portfolio here: [https://leala-carbonneau-portfolio.vercel.app/](url)
+See the portfolio here: [https://leala-carbonneau-portfolio.vercel.app/](https://leala-carbonneau-portfolio.vercel.app/)
 
 This is a Next.js project bootstrapped with create-next-app.
 
