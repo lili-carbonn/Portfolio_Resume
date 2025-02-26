@@ -2,7 +2,8 @@ import { getPayload } from "/src/app/lib/payload";
 import { RichText as SerializedRichText } from "@payloadcms/richtext-lexical/react";
 
 const Page = async ({ params }) => {
-  const { postId } = params;
+  const resolvedParams = await params;
+  const { postId } = resolvedParams;
   const payload = await getPayload();
   
   try {
