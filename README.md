@@ -1,3 +1,5 @@
+See the portfolio here: [https://leala-carbonneau-portfolio.vercel.app/](url)
+
 This is a Next.js project bootstrapped with create-next-app.
 
 Getting Started
