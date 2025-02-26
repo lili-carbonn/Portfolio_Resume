@@ -82,7 +82,7 @@ const ProjectSection = () => {
   return (
     <section
       id="projects"
-      className="px-4 py-40 sm:px-8 lg:px-16 bg-gradient-to-b from-transparent to-gray-900/10"
+      className="px-4 pt-20 pb-40 sm:px-8 lg:px-16 bg-gradient-to-b from-transparent to-gray-900/10"
     >
       <h2 className="text-4xl font-bold text-white mb-16 text-center tracking-tight">
         Featured Projects

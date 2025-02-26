@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const router = useRouter();
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
 
@@ -47,20 +49,6 @@ const HeroSection = () => {
       <p className="mt-6 text-xl text-gray-300 leading-8">
         Creative Solutions to Complex Problems | Exploring AI and Machine Learning
       </p>
-      <div className="flex mt-10 gap-4">
-        <Link
-          href="/posts/1"
-          className="px-8 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-500 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/20 button-hover"
-        >
-          About Me
-        </Link>
-        <Link
-          href="/posts/2"
-          className="px-8 py-3 rounded-lg border border-gray-600 hover:border-primary-500 font-medium bg-slate-900 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/20 button-hover"
-        >
-          Contact Me
-        </Link>
-      </div>
     </div>
   );
 };

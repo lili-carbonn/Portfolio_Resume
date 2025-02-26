@@ -32,7 +32,7 @@ const Navbar = () => {
           <ul className="flex p-4 md:p-0 md:flex-row md:space-x-8 mt-0">
             <li>
               <Link
-                href="/posts/1"
+                href="/posts/about"
                 className="hover:text-slate-200 transition-all duration-300"
               >
                 About
@@ -54,6 +54,14 @@ const Navbar = () => {
                 className="hover:text-slate-200"
               >
                 Projects
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/posts/contact"
+                className="hover:text-slate-200 transition-all duration-300"
+              >
+                Contact
               </Link>
             </li>
           </ul>

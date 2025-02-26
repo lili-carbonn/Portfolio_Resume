@@ -82,27 +82,6 @@ background-size: 66px 66px;
 }
 
 .default-fade {
--webkit-mask: radial-gradient(ellipse 80% 80% at center, rgb(15 23 42) 0%, transparent 75%);
-mask: radial-gradient(ellipse 80% 80% at center, rgb(15 23 42) 0%, transparent 75%);
-}
-
-@keyframes buttonHover {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-2px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.button-hover {
-  transition: all 0.3s ease;
-}
-
-.button-hover:hover {
-  animation: buttonHover 0.6s ease-in-out;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+-webkit-mask: radial-gradient(ellipse 70% 60% at center, rgb(15 23 42) 0%, transparent 70%);
+mask: radial-gradient(ellipse 70% 60% at center, rgb(15 23 42) 0%, transparent 70%);
 }

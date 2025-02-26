@@ -1,6 +1,10 @@
 import { getPayload } from "/src/app/lib/payload";
 import { RichText as SerializedRichText } from "@payloadcms/richtext-lexical/react";
 
+// Add cache control to prevent caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const Page = async ({ params }) => {
   const resolvedParams = await params;
   const { postId } = resolvedParams;
@@ -9,29 +13,49 @@ const Page = async ({ params }) => {
   try {
     console.log('Fetching post with ID/type:', postId);
     
-    // Try to find by ID first
-    let posts = await payload.find({
-      collection: "posts",
-      where: {
-        id: {
-          equals: postId
-        }
-      }
-    });
-
-    // If not found by ID, try to find by type
-    if (!posts?.docs?.length) {
-      const type = postId === "1" ? "about" : postId === "2" ? "contact" : null;
-      if (type) {
-        posts = await payload.find({
-          collection: "posts",
-          where: {
-            type: {
-              equals: type
-            }
+    let type = null;
+    let posts;
+    
+    // Check if postId is directly a type (about/contact)
+    if (postId === "about" || postId === "contact") {
+      type = postId;
+      console.log('PostId is a type:', type);
+    } 
+    // Otherwise check if it's a numeric ID that maps to a type
+    else if (postId === "1") {
+      type = "about";
+      console.log('PostId 1 maps to type: about');
+    } 
+    else if (postId === "2") {
+      type = "contact";
+      console.log('PostId 2 maps to type: contact');
+    }
+    
+    // If we have a type, query by type
+    if (type) {
+      console.log('Querying by type:', type);
+      posts = await payload.find({
+        collection: "posts",
+        where: {
+          type: {
+            equals: type
           }
-        });
-      }
+        }
+      });
+      console.log(`Found ${posts?.docs?.length || 0} posts by type:`, type);
+    } 
+    // Otherwise try to find by ID
+    else {
+      console.log('Querying by ID:', postId);
+      posts = await payload.find({
+        collection: "posts",
+        where: {
+          id: {
+            equals: postId
+          }
+        }
+      });
+      console.log(`Found ${posts?.docs?.length || 0} posts by ID:`, postId);
     }
 
     console.log("Posts query result:", posts);
