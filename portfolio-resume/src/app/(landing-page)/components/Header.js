@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ProjectsDropdown from "./ProjectsDropdown";
 
-const Navbar = () => {
+const Header = ({ projects = [] }) => {
   const router = useRouter();
 
   const handleNavigation = (sectionId) => {
@@ -17,11 +18,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed mx-auto border border-[#33353F] top-0 left-0 right-0 z-10 bg-gray-900 bg-opacity-100">
+    <nav className="fixed mx-auto border border-[#33353F] top-0 left-0 right-0 z-10 bg-gradient-to-r from-purple-200 to-amber-50">
       <div className="flex container lg:py-4 flex-wrap items-center justify-between mx-auto py-2 p-8 md:p-12 lg:p-20">
         <Link
           href={"/"}
-          className="text-2xl md:text-3xl text-white font-normal"
+          className="text-2xl md:text-3xl text-foreground font-normal"
         >
           Portfolio
         </Link>
@@ -33,33 +34,18 @@ const Navbar = () => {
             <li>
               <Link
                 href="/posts/about"
-                className="hover:text-slate-200 transition-all duration-300"
+                className="text-foreground hover:text-primary-600 transition-all duration-300"
               >
                 About
               </Link>
             </li>
             <li>
-              <Link
-                href="/"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/');
-                  setTimeout(() => {
-                    const projectsSection = document.getElementById('projects');
-                    if (projectsSection) {
-                      projectsSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }, 300);
-                }}
-                className="hover:text-slate-200"
-              >
-                Projects
-              </Link>
+              <ProjectsDropdown projects={projects} />
             </li>
             <li>
               <Link
                 href="/posts/contact"
-                className="hover:text-slate-200 transition-all duration-300"
+                className="text-foreground hover:text-primary-600 transition-all duration-300"
               >
                 Contact
               </Link>
@@ -71,4 +57,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Header;

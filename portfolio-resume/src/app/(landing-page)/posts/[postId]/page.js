@@ -1,5 +1,6 @@
 import { getPayload } from "/src/app/lib/payload";
 import { RichText as SerializedRichText } from "@payloadcms/richtext-lexical/react";
+import Image from "next/image";
 
 // Add cache control to prevent caching
 export const dynamic = 'force-dynamic';
@@ -63,9 +64,11 @@ const Page = async ({ params }) => {
     if (!posts?.docs?.length) {
       console.log("No post found for ID/type:", postId);
       return (
-        <div className="container mx-auto p-8 pb-20 sm:p-20">
-          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Page not found</h1>
-          <p className="text-center text-gray-400">The requested page could not be found.</p>
+      <div className="w-full">
+          <div className="container mx-auto p-8 pb-20 sm:p-20">
+            <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Page not found</h1>
+            <p className="text-center text-gray-500">The requested page could not be found.</p>
+          </div>
         </div>
       );
     }
@@ -74,27 +77,71 @@ const Page = async ({ params }) => {
     console.log("Post data:", post);
 
     return (
-      <div className="container mx-auto p-8 pb-20 sm:p-20">
-        <h1 className="text-5xl font-bold mb-5 leading-normal text-center">{post.title}</h1>
-        <div className="prose prose-invert max-w-none">
-          <SerializedRichText
-            className="payload-richtext"
-            data={post.content}
-          />
+      <div className="w-full">
+        <div className="container mx-auto p-8 pb-20 sm:p-20">
+          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">{post.title}</h1>
+          <div className="prose max-w-none">
+            <SerializedRichText
+              className="payload-richtext"
+              data={post.content}
+            />
+          </div>
+          
+          {/* Display post image if available */}
+          {post.image && post.image.url && (
+            <div className="mt-8">
+              <div className="relative h-[400px] rounded-xl overflow-hidden border border-gray-300">
+                <Image
+                  src={post.image.url}
+                  alt={post.image.alt || post.title}
+                  fill
+                  className="object-cover scale-110 object-[25%_25%]" /* Adjusted to focus more on top-left (crop bottom and right) */
+                  priority
+                  unoptimized={post.image.url.startsWith('/api/')}
+                />
+              </div>
+            </div>
+          )}
+          
+          {/* Display card images if available */}
+          {post.cards && post.cards.length > 0 && (
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {post.cards.map((card, index) => (
+                card.image && card.image.url && (
+                  <div key={index} className="relative">
+                    <div className="relative h-[300px] rounded-xl overflow-hidden border border-gray-300">
+                      <Image
+                        src={card.image.url}
+                        alt={card.image.alt || card.title || `Image ${index + 1}`}
+                        fill
+                        className="object-cover scale-400 object-[50%_50%]" 
+                        unoptimized={card.image.url.startsWith('/api/')}
+                      />
+                    </div>
+                    {card.title && (
+                      <h3 className="mt-3 text-lg font-medium text-foreground">{card.title}</h3>
+                    )}
+                  </div>
+                )
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
   } catch (error) {
     console.error("Error fetching post:", error);
     return (
-      <div className="container mx-auto p-8 pb-20 sm:p-20">
-        <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
-        <p className="text-center text-gray-400">An error occurred while loading the page.</p>
-        {process.env.NODE_ENV === 'development' && (
-          <pre className="mt-4 p-4 bg-gray-800 rounded-lg overflow-auto">
-            {JSON.stringify(error, null, 2)}
-          </pre>
-        )}
+      <div className="w-full">
+        <div className="container mx-auto p-8 pb-20 sm:p-20">
+          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
+          <p className="text-center text-gray-500">An error occurred while loading the page.</p>
+          {process.env.NODE_ENV === 'development' && (
+            <pre className="mt-4 p-4 bg-gray-100 rounded-lg overflow-auto text-gray-800">
+              {JSON.stringify(error, null, 2)}
+            </pre>
+          )}
+        </div>
       </div>
     );
   }

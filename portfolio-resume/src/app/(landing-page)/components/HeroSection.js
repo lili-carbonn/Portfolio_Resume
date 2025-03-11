@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { TypeAnimation } from 'react-type-animation';
 
 const HeroSection = () => {
   const router = useRouter();
@@ -43,12 +45,59 @@ const HeroSection = () => {
         <div className="absolute top-4 right-4 sm:w-[400px] sm:h-[400px] w-[150px] h-[150px] bg-primary-500/60 rounded-full blur-2xl"></div>
         <div className="absolute top-8 right-8 sm:w-[300px] sm:h-[300px] w-[100px] h-[100px] bg-primary-400/70 rounded-full blur-xl"></div>
       </div>
-      <h1 className="text-4xl font-bold tracking-light">
-        Leala Carbonneau <span className="block text-primary-600">Data and Computer Science</span>
-      </h1>
-      <p className="mt-6 text-xl text-gray-300 leading-8">
-        Creative Solutions to Complex Problems | Exploring AI and Machine Learning
-      </p>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div>
+          <h1 className="text-4xl font-bold tracking-light">
+            <TypeAnimation
+              sequence={[
+                'Leala Carbonneau',
+                1000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={0}
+              cursor={false}
+            />
+            <span className="block text-primary-600">
+              <TypeAnimation
+                sequence={[
+                  500, // Delay before starting
+                  'Data and Computer Science',
+                  1000,
+                ]}
+                wrapper="span"
+                speed={50}
+                repeat={0}
+                cursor={false}
+              />
+            </span>
+          </h1>
+          <p className="mt-6 text-xl text-gray-600 leading-8">
+            <TypeAnimation
+              sequence={[
+                1500, // Delay before starting
+                'Creative Solutions to Complex Problems | Exploring AI and Machine Learning',
+                1000,
+              ]}
+              wrapper="span"
+              speed={70}
+              repeat={0}
+              cursor={false}
+            />
+          </p>
+        </div>
+        <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-lg animate-photo-container">
+          <Image
+            src="/20241225_160255.jpg"
+            alt="Leala Carbonneau portrait"
+            width={320}
+            height={320}
+            className="object-cover w-64 h-64 md:w-80 md:h-80 animate-photo"
+            priority
+          />
+          <div className="absolute inset-0 bg-primary-500/20 animate-photo-glow"></div>
+        </div>
+      </div>
     </div>
   );
 };
