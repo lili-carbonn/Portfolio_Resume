@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# database
+/uploads
+/media
+
+# migration scripts
+drop-enum-cascade.sql
+execute-drop-cascade.js
