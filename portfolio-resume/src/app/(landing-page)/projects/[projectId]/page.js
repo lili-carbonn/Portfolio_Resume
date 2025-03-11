@@ -38,19 +38,21 @@ const ProjectPage = async ({ params }) => {
 
     if (!posts?.docs?.length) {
       console.log("No project found for ID:", projectId);
-    return (
-      <div className="w-full">
-        <div className="container mx-auto p-8 pb-20 sm:p-20">
-          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Project not found</h1>
-          <p className="text-center text-gray-500">The requested project could not be found.</p>
-          <div className="mt-8 text-center">
-            <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
-              <span>Back to Projects</span>
-            </Link>
+      return (
+        <div className="w-full">
+        <div className="container mx-auto p-4 pb-12 sm:p-12">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
+              <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Project not found</h1>
+              <p className="text-center text-gray-500">The requested project could not be found.</p>
+              <div className="mt-8 text-center">
+                <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
+                  <span>Back to Projects</span>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
     }
 
     const project = posts.docs[0];
@@ -120,84 +122,74 @@ const ProjectPage = async ({ params }) => {
 
     return (
       <div className="w-full">
-        <div className="container mx-auto p-8 pb-20 sm:p-20">
-          <div className="mb-8">
-          <Link href="/#projects" className="inline-flex items-center text-primary-600 hover:text-primary-800 transition-colors">
-            <span className="mr-2">←</span>
-            <span>Back to Projects</span>
-          </Link>
-        </div>
-        
-        <h1 className="text-5xl font-bold mb-6 leading-tight text-foreground">{project.title}</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-          {/* Project image */}
-          <div className="relative h-[300px] sm:h-[400px] rounded-xl overflow-hidden border border-gray-300">
-            <Image
-              src={imageUrl}
-              alt={project.title}
-              fill
-              className="object-cover"
-              priority
-              unoptimized={imageUrl && imageUrl.startsWith('/api/')} // Don't optimize API images
-            />
-          </div>
-          
-          <div>
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 text-sm rounded-full bg-primary-100 text-primary-700 border border-primary-200 backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
-              ))}
+        <div className="container mx-auto p-4 pb-12 sm:p-12">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
+            <div className="mb-8">
+              <Link href="/#projects" className="inline-flex items-center text-primary-600 hover:text-primary-800 transition-colors">
+                <span className="mr-2">←</span>
+                <span>Back to Projects</span>
+              </Link>
             </div>
             
-            {/* Project link and Additional Information Link */}
-            <div className="flex flex-wrap gap-4 mb-8">
-              {projectLink && (
-                <a
-                  href={projectLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105 group"
-                >
-                  <span>View Project</span>
-                  <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                </a>
-              )}
+            <h1 className="text-2xl font-bold mb-6 leading-tight text-foreground">{project.title}</h1>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+              {/* Project image */}
+              <div className="relative h-[200px] sm:h-[300px] rounded-xl overflow-hidden border border-gray-300">
+                <Image
+                  src={imageUrl}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  unoptimized={imageUrl && imageUrl.startsWith('/api/')} // Don't optimize API images
+                />
+              </div>
               
-              {additionalInfoLink && (
-                <a
-                  href={additionalInfoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-200 hover:text-gray-800 transition-all duration-300"
-                >
-                  <span>Additional Information</span>
-                  <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                </a>
-              )}
+              <div>
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 text-sm rounded-full bg-primary-100 text-primary-700 border border-primary-200 backdrop-blur-sm"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                {/* Full content */}
+                <div className="prose max-w-none text-l flex flex-wrap gap-2 mb-4">
+                  <SerializedRichText data={project.content} />
+                </div>
+                {/* Project link and Additional Information Link */}
+                <div className="flex flex-wrap gap-4 mb-8">
+                  {projectLink && (
+                    <a
+                      href={projectLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105 group"
+                    >
+                      <span>View Project</span>
+                      <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                  )}
+                  
+                  {additionalInfoLink && (
+                    <a
+                      href={additionalInfoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-200 hover:text-gray-800 transition-all duration-300"
+                    >
+                      <span>Additional Information</span>
+                      <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
-            
-            {/* Full content */}
-            <div className="prose max-w-none">
-              <SerializedRichText data={project.content} />
-            </div>
-          </div>
-        </div>
-        
-        {/* Back to projects link */}
-        <div className="mt-12 border-t border-gray-300 pt-8">
-          <Link
-            href="/#projects"
-            className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-200 hover:text-gray-800 transition-all duration-300"
-          >
-            <span>View All Projects</span>
-          </Link>
           </div>
         </div>
       </div>
@@ -206,18 +198,20 @@ const ProjectPage = async ({ params }) => {
     console.error("Error fetching project:", error);
     return (
       <div className="w-full">
-        <div className="container mx-auto p-8 pb-20 sm:p-20">
-          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
-        <p className="text-center text-gray-500">An error occurred while loading the project.</p>
-        {process.env.NODE_ENV === 'development' && (
-          <pre className="mt-4 p-4 bg-gray-100 rounded-lg overflow-auto text-gray-800">
-            {JSON.stringify(error, null, 2)}
-          </pre>
-        )}
-        <div className="mt-8 text-center">
-          <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
-            <span>Back to Projects</span>
-          </Link>
+        <div className="container mx-auto p-4 pb-12 sm:p-12">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
+            <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
+            <p className="text-center text-gray-500">An error occurred while loading the project.</p>
+            {process.env.NODE_ENV === 'development' && (
+              <pre className="mt-4 p-4 bg-gray-100 rounded-lg overflow-auto text-gray-800">
+                {JSON.stringify(error, null, 2)}
+              </pre>
+            )}
+            <div className="mt-8 text-center">
+              <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
+                <span>Back to Projects</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

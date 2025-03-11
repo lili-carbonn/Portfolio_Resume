@@ -65,11 +65,13 @@ const Page = async ({ params }) => {
       console.log("No post found for ID/type:", postId);
       return (
       <div className="w-full">
-          <div className="container mx-auto p-8 pb-20 sm:p-20">
+        <div className="container mx-auto p-4 pb-12 sm:p-12">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
             <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Page not found</h1>
             <p className="text-center text-gray-500">The requested page could not be found.</p>
           </div>
         </div>
+      </div>
       );
     }
 
@@ -78,9 +80,10 @@ const Page = async ({ params }) => {
 
     return (
       <div className="w-full">
-        <div className="container mx-auto p-8 pb-20 sm:p-20">
-          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">{post.title}</h1>
-          <div className="prose max-w-none">
+        <div className="container mx-auto p-4 pb-12 sm:p-12">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
+            <h1 className="text-5xl font-bold mb-5 leading-normal text-center">{post.title}</h1>
+            <div className="prose max-w-none">
             <SerializedRichText
               className="payload-richtext"
               data={post.content}
@@ -126,6 +129,7 @@ const Page = async ({ params }) => {
               ))}
             </div>
           )}
+          </div>
         </div>
       </div>
     );
@@ -133,14 +137,16 @@ const Page = async ({ params }) => {
     console.error("Error fetching post:", error);
     return (
       <div className="w-full">
-        <div className="container mx-auto p-8 pb-20 sm:p-20">
-          <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
-          <p className="text-center text-gray-500">An error occurred while loading the page.</p>
-          {process.env.NODE_ENV === 'development' && (
-            <pre className="mt-4 p-4 bg-gray-100 rounded-lg overflow-auto text-gray-800">
-              {JSON.stringify(error, null, 2)}
-            </pre>
-          )}
+        <div className="container mx-auto p-4 pb-12 sm:p-12">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
+            <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
+            <p className="text-center text-gray-500">An error occurred while loading the page.</p>
+            {process.env.NODE_ENV === 'development' && (
+              <pre className="mt-4 p-4 bg-gray-100 rounded-lg overflow-auto text-gray-800">
+                {JSON.stringify(error, null, 2)}
+              </pre>
+            )}
+          </div>
         </div>
       </div>
     );
