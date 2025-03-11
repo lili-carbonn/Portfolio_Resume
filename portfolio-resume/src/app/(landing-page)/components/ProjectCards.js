@@ -14,7 +14,7 @@ const ProjectCard = ({ project, index }) => {
     <Link
       href={`/projects/${project.id}`}
       ref={ref}
-      className={`group bg-gradient-to-r from-amber-50 to-purple-100 backdrop-blur-md rounded-xl p-3 border border-gray-300 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/5 hover:-translate-y-1 block h-full opacity-0 ${isInView ? 'animate-scroll-fade-in' : ''}`}
+      className={`group bg-gradient-to-r from-amber-50 to-purple-100 backdrop-blur-md rounded-xl p-3 border border-gray-300 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/5 hover:-translate-y-1 block h-full ${isInView ? 'animate-scroll-fade-in' : 'opacity-0'}`}
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <div className="flex flex-col items-center justify-center text-center gap-1 h-full">
@@ -30,12 +30,15 @@ const ProjectCard = ({ project, index }) => {
             </div>
             
             <Image 
-              src={project.image} 
+              src={typeof project.image === 'object' && project.image.url ? project.image.url : project.image} 
               alt={project.title || "Project image"} 
               width={240}
               height={135}
               className="z-10 max-h-36 w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              unoptimized={project.image && project.image.startsWith('/api/')} // Don't optimize API images
+              unoptimized={
+                (typeof project.image === 'string' && project.image.startsWith('/api/')) || 
+                (typeof project.image === 'object' && project.image.url && project.image.url.startsWith('/api/'))
+              } // Don't optimize API images
               priority // Prioritize loading these images
               loading="eager"
             />
@@ -47,7 +50,7 @@ const ProjectCard = ({ project, index }) => {
           {project.tags && project.tags.map((tag, tagIndex) => (
             <span
               key={tagIndex}
-              className="px-2 py-0.5 text-xs rounded-full bg-primary-100 text-primary-700 border border-primary-200 backdrop-blur-sm"
+              className="px-2 py-0.5 text-xs rounded-full bg-amber-50 text-primary-700 border border-primary-200 backdrop-blur-sm"
             >
               {tag}
             </span>

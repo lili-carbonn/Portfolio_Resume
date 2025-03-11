@@ -1,13 +1,22 @@
-import ProjectCards from "./ProjectCards";
-import { getPayload } from "@/app/lib/payload";
-import AnimatedSectionTitle from "./AnimatedSectionTitle";
+"use client";
 
-// Add cache control to prevent caching
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import ProjectCards from "./ProjectCards";
+import AnimatedSectionTitle from "./AnimatedSectionTitle";
+import { useProjects } from "../context/ProjectsContext";
+import { useState, useEffect } from "react";
 
 // Fallback projects in case there are no projects in the database
 const fallbackProjects = [
+  {
+    "id": "yelp-dataset-challenge",
+    "title": "Yelp Dataset Challenge: Identifying Influential Users",
+    "tags": ["Graph Neural Networks", "Machine Learning", "Social Network Analysis", "Python", "PyTorch Geometric", "Sentence-BERT"],
+    "description": "This project implements a graph-based machine learning approach to identify influential users on Yelp.",
+    "fullDescription": "This project implements a graph-based machine learning approach to identify influential users on Yelp. Users and businesses are represented as nodes, with reviews forming edges in a heterogeneous graph. The model leverages Sentence-BERT embeddings for text analysis, network centrality metrics, and sentiment features. A Graph Convolutional Network (GCN) serves as a baseline, while an enhanced Graph Attention Network (GAT) improves accuracy by incorporating multi-head attention. The study demonstrates that integrating multiple feature types significantly enhances prediction accuracy, reaching 81% in classifying influential users.",
+    "image": "/Screenshot 2025-03-07 134115.png",
+    "techStack": ["Python", "PyTorch", "PyTorch Geometric", "Sentence-BERT", "NetworkX", "Scikit-learn"],
+    "link": "https://github.com/lili-carbonn/yelp-dataset-challenge"
+  },
   {
     "id": "fallback1",
     "title": "Multithreaded Concurrency Examples",
@@ -50,161 +59,64 @@ const fallbackProjects = [
   }
 ];
 
-const ProjectSection = async () => {
-  let projects = [];
+const ProjectSection = () => {
+  // Get the basic project data from context with fallback to empty array
+  const basicProjects = useProjects() || [];
+  // State to store the enhanced project data
+  const [projects, setProjects] = useState([]);
   
-  try {
-    // Try to fetch projects from the database
-    const payload = await getPayload();
-    
-    // Query for posts with type "project"
-    const result = await payload.find({
-      collection: 'posts',
-      where: {
-        type: {
-          equals: 'project'
-        }
-      }
-    });
-    
-    if (result && result.docs && result.docs.length > 0) {
-      console.log(`Found ${result.docs.length} projects in the database`);
-      
-      // Log the raw data from the database for debugging
-      try {
-        console.log("Raw project data from database:", JSON.stringify(result.docs, null, 2));
-      } catch (e) {
-        console.error("Error stringifying project data:", e);
-      }
-      
-      // Helper function to extract text from rich text content
-      const extractTextFromRichText = (richText) => {
-        if (!richText) return '';
-        
-        try {
-          // If it's already a string, return it
-          if (typeof richText === 'string') return richText.replace(/<[^>]*>/g, '');
-          
-          // If it's an object with a root property (Lexical format)
-          if (richText.root && richText.root.children) {
-            // Extract text from all paragraphs
-            return richText.root.children
-              .filter(child => child.children)
-              .flatMap(child => 
-                child.children
-                  .filter(textNode => textNode.text)
-                  .map(textNode => textNode.text)
-              )
-              .join(' ');
-          }
-          
-          // Fallback to JSON stringify
-          return JSON.stringify(richText);
-        } catch (e) {
-          console.error('Error extracting text from rich text:', e);
-          return 'Error extracting text';
-        }
-      };
-      
-      // Map the database projects to the format expected by ProjectCards
-      projects = result.docs.map(post => {
-        // Initialize tags array
-        let tags = ['Project']; // Default tag
-        
-        // Use the first card's data if available
-        if (post.cards && post.cards.length > 0) {
-          const card = post.cards[0];
-          
-          // Process image URL from the card
-          let imageUrl = '/placeholder.jpg';
-          if (card.image) {
-            // For Media collection items, we need to use the URL directly
-            // The image is a reference to a Media collection item
-            imageUrl = card.image.url || '/placeholder.jpg';
-            
-            // Keep the API URL as is - Next.js will handle it
-          }
-          
-          // Add tags from card image if available
-          if (card.image && card.image.tags && card.image.tags.length > 0) {
-            // Extract tags from the media collection
-            const mediaTags = card.image.tags.map(tagObj => tagObj.tag || tagObj).filter(Boolean);
-            if (mediaTags.length > 0) {
-              tags = [...tags, ...mediaTags];
-            }
-          }
-          
+  useEffect(() => {
+    // If we have projects from context, use them directly or enhance them with fallback data
+    if (basicProjects.length > 0) {
+      const enhancedProjects = basicProjects.map(project => {
+        // First, check if this is the Yelp Dataset Challenge project by title
+        if (project.title && project.title.includes("Yelp Dataset Challenge")) {
+          // Use the predefined Yelp Dataset Challenge project
+          const yelpProject = fallbackProjects.find(fp => fp.id === "yelp-dataset-challenge");
           return {
-            id: post.id || `db-${Math.random().toString(36).substr(2, 9)}`,
-            title: card.title || post.title || 'Untitled Project',
-            description: extractTextFromRichText(card.description) || 'No description available',
-            fullDescription: extractTextFromRichText(post.content) || 'No detailed description available',
-            image: imageUrl,
-            tags: tags,
-            link: (post.link && typeof post.link === 'string') 
-              ? post.link 
-              : (post.link && post.link.root) 
-                ? extractTextFromRichText(post.link) 
-                : (card && card.link) 
-                  ? extractTextFromRichText(card.link) 
-                  : '#',
-            additionalInfoLink: post.additionalInfoLink || ''
-          };
-        } else {
-          // Fallback to post data if no cards
-          let imageUrl = '/placeholder.jpg';
-          if (post.image) {
-            // For Media collection items, we need to use the URL directly
-            // The image is a reference to a Media collection item
-            imageUrl = post.image.url || '/placeholder.jpg';
-            
-            // Keep the API URL as is - Next.js will handle it
-          }
-          
-          // Add tags from post image if available (only if no card image tags were found)
-          if (post.image && post.image.tags && post.image.tags.length > 0 && tags.length <= 1) {
-            const postImageTags = post.image.tags.map(tagObj => tagObj.tag || tagObj).filter(Boolean);
-            if (postImageTags.length > 0) {
-              tags = [...tags, ...postImageTags];
-            }
-          }
-          
-          return {
-            id: post.id || `db-${Math.random().toString(36).substr(2, 9)}`,
-            title: post.title || 'Untitled Project',
-            description: extractTextFromRichText(post.briefDescription) || 'No description available',
-            fullDescription: extractTextFromRichText(post.content) || 'No detailed description available',
-            image: imageUrl,
-            tags: tags,
-            link: (post.link && typeof post.link === 'string') 
-              ? post.link 
-              : (post.link && post.link.root) 
-                ? extractTextFromRichText(post.link) 
-                : '#',
-            additionalInfoLink: post.additionalInfoLink || ''
+            ...yelpProject,
+            id: project.id || yelpProject.id
           };
         }
+        
+        // Otherwise, try to find a matching fallback project
+        const fallbackProject = fallbackProjects.find(
+          fallback => (fallback.title && project.title && 
+            (fallback.title.includes(project.title) || project.title.includes(fallback.title)))
+        );
+        
+        // If we found a matching fallback, use its data to enhance the basic project
+        if (fallbackProject) {
+          return {
+            ...fallbackProject,
+            id: project.id || fallbackProject.id,
+            title: project.title || fallbackProject.title
+          };
+        }
+        
+        // Otherwise, create a basic enhanced project while preserving the original title
+        return {
+          id: project.id,
+          title: project.title, // Preserve the original title
+          tags: ['Project'],
+          description: `Details for ${project.title}`,
+          fullDescription: `Full details for ${project.title}`,
+          image: '/Example_Image_OS_Project.jpeg',
+          link: '#'
+        };
       });
       
-      try {
-        console.log("Processed projects:", JSON.stringify(projects, null, 2));
-      } catch (e) {
-        console.error("Error stringifying processed projects:", e);
-      }
+      setProjects(enhancedProjects);
     } else {
-      console.log("No projects found in the database, using fallback projects");
-      projects = fallbackProjects;
+      // If no projects from context, use fallback projects
+      setProjects(fallbackProjects);
     }
-  } catch (error) {
-    console.error("Error fetching projects from database:", error);
-    console.log("Using fallback projects due to database error");
-    projects = fallbackProjects;
-  }
+  }, [basicProjects]);
   
   return (
     <section
       id="projects"
-      className="px-4 pt-20 pb-40 sm:px-8 lg:px-16 bg-gradient-to-b from-transparent to-primary-50/30"
+      className="px-4 pt-10 pb-20 sm:px-8 lg:px-16 bg-gradient-to-b from-transparent to-primary-50/30"
     >
       <AnimatedSectionTitle>
         Featured Projects

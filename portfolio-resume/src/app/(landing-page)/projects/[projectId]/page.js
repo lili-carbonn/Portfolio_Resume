@@ -39,13 +39,13 @@ const ProjectPage = async ({ params }) => {
     if (!posts?.docs?.length) {
       console.log("No project found for ID:", projectId);
       return (
-        <div className="w-full">
-        <div className="container mx-auto p-4 pb-12 sm:p-12">
+      <div className="w-full pt-8 md:pt-12">
+        <div className="container mx-auto p-4 pb-6 sm:p-6">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
               <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Project not found</h1>
               <p className="text-center text-gray-500">The requested project could not be found.</p>
               <div className="mt-8 text-center">
-                <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
+              <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-amber-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
                   <span>Back to Projects</span>
                 </Link>
               </div>
@@ -121,10 +121,10 @@ const ProjectPage = async ({ params }) => {
     console.log("Using image URL:", imageUrl);
 
     return (
-      <div className="w-full">
-        <div className="container mx-auto p-4 pb-12 sm:p-12">
+      <div className="w-full pt-8 md:pt-12">
+        <div className="container mx-auto p-4 pb-6 sm:p-6">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
-            <div className="mb-8">
+            <div className="mb-4">
               <Link href="/#projects" className="inline-flex items-center text-primary-600 hover:text-primary-800 transition-colors">
                 <span className="mr-2">←</span>
                 <span>Back to Projects</span>
@@ -133,7 +133,7 @@ const ProjectPage = async ({ params }) => {
             
             <h1 className="text-2xl font-bold mb-6 leading-tight text-foreground">{project.title}</h1>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
               {/* Project image */}
               <div className="relative h-[200px] sm:h-[300px] rounded-xl overflow-hidden border border-gray-300">
                 <Image
@@ -152,7 +152,7 @@ const ProjectPage = async ({ params }) => {
                   {tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 text-sm rounded-full bg-primary-100 text-primary-700 border border-primary-200 backdrop-blur-sm"
+                      className="px-3 py-1 text-sm rounded-full bg-primary-50 text-primary-700 border border-primary-200 backdrop-blur-sm"
                     >
                       {tag}
                     </span>
@@ -163,13 +163,13 @@ const ProjectPage = async ({ params }) => {
                   <SerializedRichText data={project.content} />
                 </div>
                 {/* Project link and Additional Information Link */}
-                <div className="flex flex-wrap gap-4 mb-8">
+                <div className="flex flex-wrap gap-4 mb-4">
                   {projectLink && (
                     <a
                       href={projectLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105 group"
+                      className="inline-flex items-center px-6 py-3 bg-primary-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105 group"
                     >
                       <span>View Project</span>
                       <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
@@ -181,7 +181,7 @@ const ProjectPage = async ({ params }) => {
                       href={additionalInfoLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-200 hover:text-gray-800 transition-all duration-300"
+                      className="inline-flex items-center px-6 py-3 bg-primary-50 text-primary-700 border border-gray-300 rounded-xl hover:bg-gray-200 hover:text-gray-800 transition-all duration-300"
                     >
                       <span>Additional Information</span>
                       <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
@@ -197,8 +197,8 @@ const ProjectPage = async ({ params }) => {
   } catch (error) {
     console.error("Error fetching project:", error);
     return (
-      <div className="w-full">
-        <div className="container mx-auto p-4 pb-12 sm:p-12">
+      <div className="w-full pt-8 md:pt-12">
+        <div className="container mx-auto p-4 pb-6 sm:p-6">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
             <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>
             <p className="text-center text-gray-500">An error occurred while loading the project.</p>
@@ -208,7 +208,7 @@ const ProjectPage = async ({ params }) => {
               </pre>
             )}
             <div className="mt-8 text-center">
-              <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
+              <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-amber-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
                 <span>Back to Projects</span>
               </Link>
             </div>

@@ -25,9 +25,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <ProjectsProvider />
-        <div className="mt-7 md:mt-20">{children}</div>
-        <Footer />
+        <div className="flex flex-col min-h-screen">
+          <ProjectsProvider>
+            <div className="flex-grow mt-7 md:mt-20">{children}</div>
+          </ProjectsProvider>
+          <Footer />
+        </div>
         <Analytics />
       </body>
     </html>

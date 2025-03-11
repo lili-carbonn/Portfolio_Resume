@@ -64,7 +64,7 @@ const Page = async ({ params }) => {
     if (!posts?.docs?.length) {
       console.log("No post found for ID/type:", postId);
       return (
-      <div className="w-full">
+      <div className="w-full pt-16 md:pt-24">
         <div className="container mx-auto p-4 pb-12 sm:p-12">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
             <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Page not found</h1>
@@ -79,7 +79,7 @@ const Page = async ({ params }) => {
     console.log("Post data:", post);
 
     return (
-      <div className="w-full">
+      <div className="w-full pt-16 md:pt-24">
         <div className="container mx-auto p-4 pb-12 sm:p-12">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
             <h1 className="text-5xl font-bold mb-5 leading-normal text-center">{post.title}</h1>
@@ -136,7 +136,7 @@ const Page = async ({ params }) => {
   } catch (error) {
     console.error("Error fetching post:", error);
     return (
-      <div className="w-full">
+      <div className="w-full pt-16 md:pt-24">
         <div className="container mx-auto p-4 pb-12 sm:p-12">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
             <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Error</h1>

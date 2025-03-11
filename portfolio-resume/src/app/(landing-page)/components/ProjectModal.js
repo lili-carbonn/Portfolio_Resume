@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 
 export default function ProjectModal({ project, onClose, onNext, onPrev }) {
   const modalRef = useRef();
+  const modalContentRef = useRef();
   const [isExpanded, setIsExpanded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [windowSize, setWindowSize] = useState({
@@ -71,7 +72,7 @@ export default function ProjectModal({ project, onClose, onNext, onPrev }) {
       ref={modalRef}
     >
       <div
-        ref={modalRef}
+        ref={modalContentRef}
         className={`bg-gray-900/90 backdrop-blur-md rounded-2xl max-w-5xl w-11/12 border border-gray-700/30 p-4 sm:p-6 md:p-8 relative ${isExpanded ? 'max-h-[85vh] overflow-y-auto' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >

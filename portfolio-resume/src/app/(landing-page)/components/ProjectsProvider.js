@@ -1,8 +1,12 @@
 import { getPayload } from "@/app/lib/payload";
-import Header from "./Header";
+import { ClientProjectsProvider } from "./ClientProjectsProvider";
 
 // Fallback projects in case there are no projects in the database
 const fallbackProjects = [
+  {
+    "id": "yelp-dataset-challenge",
+    "title": "Yelp Dataset Challenge: Identifying Influential Users",
+  },
   {
     "id": "fallback1",
     "title": "Multithreaded Concurrency Examples",
@@ -21,11 +25,12 @@ const fallbackProjects = [
   }
 ];
 
-// Add cache control to prevent caching
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Use stable cache with revalidation
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidate every hour
 
-const ProjectsProvider = async () => {
+// This is a server component that fetches the data
+const ProjectsProvider = async ({ children }) => {
   let projects = [];
   
   try {
@@ -40,14 +45,19 @@ const ProjectsProvider = async () => {
           equals: 'project'
         }
       },
-      depth: 0 // Reduce depth to improve performance
+      depth: 1 // Increase depth to get related media
     });
     
     if (result && result.docs && result.docs.length > 0) {
-      // Map the database projects to just id and title
+      // Map the database projects with more details
       projects = result.docs.map(post => ({
         id: post.id,
-        title: post.title || 'Untitled Project'
+        title: post.title || 'Untitled Project',
+        content: post.content,
+        image: post.image,
+        link: post.link,
+        additionalInfoLink: post.additionalInfoLink,
+        cards: post.cards
       }));
     } else {
       projects = fallbackProjects;
@@ -57,7 +67,12 @@ const ProjectsProvider = async () => {
     projects = fallbackProjects;
   }
   
-  return <Header projects={projects} />;
+  // Pass the fetched data to the client component
+  return (
+    <ClientProjectsProvider projects={projects}>
+      {children}
+    </ClientProjectsProvider>
+  );
 };
 
 export default ProjectsProvider;
