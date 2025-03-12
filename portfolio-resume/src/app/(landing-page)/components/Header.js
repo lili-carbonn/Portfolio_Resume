@@ -34,7 +34,7 @@ const Header = () => {
 
   return (
     <nav className="fixed mx-auto border border-[#33353F] top-0 left-0 right-0 z-10 bg-gradient-to-r from-purple-200 to-amber-50 backdrop-blur-sm shadow-md">
-      <div className="flex container lg:py-4 flex-wrap items-center justify-between mx-auto py-2 p-8 md:p-12 lg:p-20">
+      <div className="flex container lg:py-4 flex-wrap items-center justify-between mx-auto p-18 md:p-12 lg:p-20">
         <Link
           href={"/"}
           className="text-2xl md:text-3xl text-foreground font-normal relative overflow-hidden group"
@@ -46,11 +46,11 @@ const Header = () => {
           className="menu hidden md:block md:w-auto"
           id="navbar"
         >
-          <ul className="flex p-4 md:p-0 md:flex-row md:space-x-10 mt-0">
+          <ul className="flex p-4 md:p-0 md:flex-row md:space-x-8 mt-0">
             <li>
               <Link
                 href="/posts/about"
-                className="text-foreground relative px-2 py-1 overflow-hidden group"
+                className="text-foreground relative px-3 py-2 overflow-hidden group flex items-center justify-center"
               >
                 <span className="relative z-10 transition-all duration-300 group-hover:text-primary-600">About</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
@@ -63,7 +63,7 @@ const Header = () => {
             <li>
               <Link
                 href="/posts/contact"
-                className="text-foreground relative px-2 py-1 overflow-hidden group"
+                className="text-foreground relative px-3 py-2 overflow-hidden group flex items-center justify-center"
               >
                 <span className="relative z-10 transition-all duration-300 group-hover:text-primary-600">Contact</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>

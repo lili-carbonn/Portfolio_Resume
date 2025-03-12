@@ -45,7 +45,7 @@ const ProjectsProvider = async ({ children }) => {
           equals: 'project'
         }
       },
-      depth: 1 // Increase depth to get related media
+      depth: 2 // Increase depth to get related media and its fields
     });
     
     if (result && result.docs && result.docs.length > 0) {

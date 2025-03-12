@@ -1,14 +1,15 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useInView from "../hooks/useInView";
+import ImageWithFallback from "./ImageWithFallback";
 
 const ProjectCard = ({ project, index }) => {
   const { ref, isInView } = useInView({
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px' // Trigger a bit before the element is fully in view
   });
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   return (
     <Link
@@ -23,24 +24,18 @@ const ProjectCard = ({ project, index }) => {
         
         {/* Image */}
         {project.image && (
-          <div className="mb-1 overflow-hidden rounded-lg h-36 w-full flex justify-center items-center bg-gray-100">
-            {/* Fallback UI shown while image is loading */}
-            <div className="absolute inset-0 flex items-center justify-center z-0">
-              <div className="w-10 h-10 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin"></div>
-            </div>
-            
-            <Image 
-              src={typeof project.image === 'object' && project.image.url ? project.image.url : project.image} 
+          <div className="mb-1 overflow-hidden rounded-lg h-36 w-full flex justify-center items-center bg-gray-100 relative">
+            <ImageWithFallback 
+              src={project.image} 
               alt={project.title || "Project image"} 
               width={240}
               height={135}
-              className="z-10 max-h-36 w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              unoptimized={
-                (typeof project.image === 'string' && project.image.startsWith('/api/')) || 
-                (typeof project.image === 'object' && project.image.url && project.image.url.startsWith('/api/'))
-              } // Don't optimize API images
+              sizes="(max-width: 768px) 100vw, 240px"
+              className="max-h-36 w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              style={{ width: 'auto', height: 'auto' }}
               priority // Prioritize loading these images
               loading="eager"
+              unoptimized={true}
             />
           </div>
         )}

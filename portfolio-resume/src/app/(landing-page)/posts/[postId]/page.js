@@ -1,6 +1,6 @@
 import { getPayload } from "/src/app/lib/payload";
 import { RichText as SerializedRichText } from "@payloadcms/richtext-lexical/react";
-import Image from "next/image";
+import ImageWithFallback from "../../components/ImageWithFallback";
 
 // Add cache control to prevent caching
 export const dynamic = 'force-dynamic';
@@ -41,7 +41,8 @@ const Page = async ({ params }) => {
           type: {
             equals: type
           }
-        }
+        },
+        depth: 2 // Increase depth to get related media and its fields
       });
       console.log(`Found ${posts?.docs?.length || 0} posts by type:`, type);
     } 
@@ -54,7 +55,8 @@ const Page = async ({ params }) => {
           id: {
             equals: postId
           }
-        }
+        },
+        depth: 2 // Increase depth to get related media and its fields
       });
       console.log(`Found ${posts?.docs?.length || 0} posts by ID:`, postId);
     }
@@ -94,13 +96,13 @@ const Page = async ({ params }) => {
           {post.image && post.image.url && (
             <div className="mt-8">
               <div className="relative h-[400px] rounded-xl overflow-hidden border border-gray-300">
-                <Image
+                <ImageWithFallback
                   src={post.image.url}
                   alt={post.image.alt || post.title}
                   fill
-                  className="object-cover scale-110 object-[25%_25%]" /* Adjusted to focus more on top-left (crop bottom and right) */
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  className="object-cover w-auto h-auto"
                   priority
-                  unoptimized={post.image.url.startsWith('/api/')}
                 />
               </div>
             </div>
@@ -113,12 +115,12 @@ const Page = async ({ params }) => {
                 card.image && card.image.url && (
                   <div key={index} className="relative">
                     <div className="relative h-[300px] rounded-xl overflow-hidden border border-gray-300">
-                      <Image
+                      <ImageWithFallback
                         src={card.image.url}
                         alt={card.image.alt || card.title || `Image ${index + 1}`}
                         fill
-                        className="object-cover scale-400 object-[50%_50%]" 
-                        unoptimized={card.image.url.startsWith('/api/')}
+                        sizes="(max-width: 768px) 100vw, 400px"
+                        className="object-cover w-auto h-auto"
                       />
                     </div>
                     {card.title && (

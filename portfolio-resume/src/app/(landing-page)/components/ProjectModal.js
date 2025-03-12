@@ -1,12 +1,13 @@
-import Image from "next/image";
 import { X, ChevronRight, ChevronLeft } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import ImageWithFallback from "./ImageWithFallback";
 
 export default function ProjectModal({ project, onClose, onNext, onPrev }) {
   const modalRef = useRef();
   const modalContentRef = useRef();
   const [isExpanded, setIsExpanded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
     height: typeof window !== 'undefined' ? window.innerHeight : 0
@@ -151,13 +152,14 @@ export default function ProjectModal({ project, onClose, onNext, onPrev }) {
             )}
           </div>
           <div className="relative h-48 sm:h-56 md:h-64 w-full md:w-1/2 rounded-xl overflow-hidden border border-gray-700/30">
-            <Image
-              src={imageError ? "/placeholder-project.jpg" : image}
+            <ImageWithFallback
+              src={image}
               alt={title}
               fill
-              onError={handleImageError}
-              className="object-cover hover:scale-105 transition-transform duration-500"
-              unoptimized={image && image.startsWith('/api/')} // Don't optimize API images
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover hover:scale-105 transition-transform duration-500 w-auto h-auto"
+              style={{ width: 'auto', height: 'auto' }}
+              unoptimized={true}
             />
           </div>
           <button

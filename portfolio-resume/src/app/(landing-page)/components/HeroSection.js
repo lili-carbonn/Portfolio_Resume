@@ -1,14 +1,15 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { TypeAnimation } from 'react-type-animation';
+import ImageWithFallback from "./ImageWithFallback";
 
 const HeroSection = () => {
   const router = useRouter();
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleMouseMove = (ev) => {
     if (!isHovering) return;
@@ -86,14 +87,16 @@ const HeroSection = () => {
             />
           </p>
         </div>
-        <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-lg animate-photo-container">
-          <Image
+        <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-lg animate-photo-container w-64 h-80 md:w-80 md:h-96">
+          <ImageWithFallback
             src="/20241225_160255.jpg"
             alt="Leala Carbonneau portrait"
-            width={320}
-            height={320}
-            className="object-cover w-64 h-64 md:w-80 md:h-80 animate-photo"
+            width={400}
+            height={500}
+            className="object-cover w-128 h-160 md:w-80 md:h-96 animate-photo"
+            style={{ width: 'auto', height: 'auto', objectPosition: '70% 33%', transform: 'scale(1.5)' }}
             priority
+            unoptimized={true}
           />
           <div className="absolute inset-0 bg-primary-500/20 animate-photo-glow"></div>
         </div>

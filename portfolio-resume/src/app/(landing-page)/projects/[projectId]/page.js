@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getPayload } from "/src/app/lib/payload";
 import { RichText as SerializedRichText } from "@payloadcms/richtext-lexical/react";
+import ImageWithFallback from "../../components/ImageWithFallback";
 
 // Add cache control to prevent caching
 export const dynamic = 'force-dynamic';
@@ -31,7 +31,8 @@ const ProjectPage = async ({ params }) => {
             }
           }
         ]
-      }
+      },
+      depth: 2 // Increase depth to get related media and its fields
     });
 
     console.log("Project query result:", posts);
@@ -44,11 +45,12 @@ const ProjectPage = async ({ params }) => {
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
               <h1 className="text-5xl font-bold mb-5 leading-normal text-center">Project not found</h1>
               <p className="text-center text-gray-500">The requested project could not be found.</p>
-              <div className="mt-8 text-center">
-              <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-amber-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
-                  <span>Back to Projects</span>
-                </Link>
-              </div>
+            <div className="mt-8 text-center">
+              <Link href="/#projects" className="inline-flex items-center px-3 py-1.5 text-sm bg-primary-50 text-primary-700 border border-primary-200 rounded-lg shadow-md hover:bg-primary-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300">
+                <span className="mr-1">←</span>
+                <span>Back to Projects</span>
+              </Link>
+            </div>
             </div>
           </div>
         </div>
@@ -125,8 +127,8 @@ const ProjectPage = async ({ params }) => {
         <div className="container mx-auto p-4 pb-6 sm:p-6">
           <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
             <div className="mb-4">
-              <Link href="/#projects" className="inline-flex items-center text-primary-600 hover:text-primary-800 transition-colors">
-                <span className="mr-2">←</span>
+              <Link href="/#projects" className="inline-flex items-center px-3 py-1.5 text-sm bg-primary-50 text-primary-700 border border-primary-200 rounded-lg shadow-md hover:bg-primary-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300">
+                <span className="mr-1">←</span>
                 <span>Back to Projects</span>
               </Link>
             </div>
@@ -135,14 +137,15 @@ const ProjectPage = async ({ params }) => {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
               {/* Project image */}
-              <div className="relative h-[200px] sm:h-[300px] rounded-xl overflow-hidden border border-gray-300">
-                <Image
+              <div className="relative h-[200px] sm:h-[300px] rounded-xl">
+                <ImageWithFallback
                   src={imageUrl}
                   alt={project.title}
                   fill
-                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain w-auto h-auto"
                   priority
-                  unoptimized={imageUrl && imageUrl.startsWith('/api/')} // Don't optimize API images
+                  unoptimized={true}
                 />
               </div>
               
@@ -152,7 +155,7 @@ const ProjectPage = async ({ params }) => {
                   {tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 text-sm rounded-full bg-primary-50 text-primary-700 border border-primary-200 backdrop-blur-sm"
+                      className="px-3 py-1 text-sm rounded-full bg-primary-50 text-primary-700 border border-primary-200 backdrop-blur-sm shadow-sm"
                     >
                       {tag}
                     </span>
@@ -169,7 +172,7 @@ const ProjectPage = async ({ params }) => {
                       href={projectLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-primary-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105 group"
+                      className="inline-flex items-center px-6 py-3 bg-primary-50 text-primary-700 border border-primary-200 rounded-xl shadow-md hover:bg-primary-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300 hover:scale-105 group"
                     >
                       <span>View Project</span>
                       <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
@@ -181,7 +184,7 @@ const ProjectPage = async ({ params }) => {
                       href={additionalInfoLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-primary-50 text-primary-700 border border-gray-300 rounded-xl hover:bg-gray-200 hover:text-gray-800 transition-all duration-300"
+                      className="inline-flex items-center px-6 py-3 bg-primary-50 text-primary-700 border border-gray-300 rounded-xl shadow-md hover:bg-gray-200 hover:text-gray-800 hover:shadow-lg transition-all duration-300"
                     >
                       <span>Additional Information</span>
                       <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
@@ -208,7 +211,8 @@ const ProjectPage = async ({ params }) => {
               </pre>
             )}
             <div className="mt-8 text-center">
-              <Link href="/#projects" className="inline-flex items-center px-6 py-3 bg-amber-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-200 hover:border-primary-300 transition-all duration-300 hover:scale-105">
+              <Link href="/#projects" className="inline-flex items-center px-3 py-1.5 text-sm bg-primary-50 text-primary-700 border border-primary-200 rounded-lg shadow-md hover:bg-primary-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300">
+                <span className="mr-1">←</span>
                 <span>Back to Projects</span>
               </Link>
             </div>
