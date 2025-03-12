@@ -88,15 +88,17 @@ const HeroSection = () => {
           </p>
         </div>
         <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-lg animate-photo-container w-64 h-80 md:w-80 md:h-96">
-          <ImageWithFallback
+          {/* Use a standard img tag for the hero image to avoid Next.js image optimization issues */}
+          <img
             src="/20241225_160255.jpg"
             alt="Leala Carbonneau portrait"
-            width={400}
-            height={500}
-            className="object-cover w-128 h-160 md:w-80 md:h-96 animate-photo"
-            style={{ width: 'auto', height: 'auto', objectPosition: '70% 33%', transform: 'scale(1.5)' }}
-            priority
-            unoptimized={true}
+            className="absolute inset-0 w-full h-full object-contain animate-photo"
+            style={{ objectPosition: '70% 33%', transform: 'scale(1.5)' }}
+            onError={(e) => {
+              console.error("Hero image failed to load:", e);
+              e.target.onerror = null; // Prevent infinite error loop
+              e.target.src = "/placeholders/placeholder-project.jpg";
+            }}
           />
           <div className="absolute inset-0 bg-primary-500/20 animate-photo-glow"></div>
         </div>

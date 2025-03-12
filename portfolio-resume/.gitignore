@@ -41,8 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 # database
-/uploads
-/media
+# Commenting out these lines to include uploads in git
+# /uploads
+# /media
 
 # migration scripts
 drop-enum-cascade.sql

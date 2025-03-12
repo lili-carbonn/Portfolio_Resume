@@ -44,6 +44,11 @@ const ImageWithFallback = ({
         processedSrc = `/uploads/embeddings_visualization.webp`;
         console.log('Using direct path for embeddings_visualization:', processedSrc);
       }
+      // Special handling for hero image
+      else if (processedSrc.includes('20241225_160255')) {
+        processedSrc = `/20241225_160255.jpg`;
+        console.log('Using direct path for hero image:', processedSrc);
+      }
       // For other API images
       else {
         // Extract the filename from the API URL
