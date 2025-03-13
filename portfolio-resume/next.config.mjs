@@ -20,30 +20,26 @@ const nextConfig = {
         pathname: '/api/media/**',
       },
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/uploads/**',
-      },
-      {
         protocol: 'https',
         hostname: '**',
         pathname: '/api/media/**',
       },
-      {
-        protocol: 'https',
-        hostname: '**',
-        pathname: '/uploads/**',
-      },
     ],
     unoptimized: true,
   },
-  // Serve static files from the uploads directory
+  // Serve static files from the public directory
   async rewrites() {
     return [
       {
-        source: '/uploads/:path*',
-        destination: '/uploads/:path*',
+        source: '/:path*',
+        destination: '/public/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'accept',
+            value: 'image.*',
+          },
+        ],
       },
     ];
   },
@@ -56,7 +52,7 @@ const nextConfig = {
   distDir: '.next',
   // Configure public directory
   publicRuntimeConfig: {
-    staticFolder: '/uploads',
+    publicFolder: '/public',
   },
   webpack: (config) => {
     config.resolve.alias = {

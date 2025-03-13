@@ -12,6 +12,9 @@ const ProjectsDropdown = ({ projects = [] }) => {
   // Set isMounted to true after component mounts
   useEffect(() => {
     setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
   }, []);
 
   // Close dropdown when clicking outside

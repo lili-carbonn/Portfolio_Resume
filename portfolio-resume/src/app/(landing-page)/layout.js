@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ProjectsProvider from "./components/ProjectsProvider";
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
       >
         <div className="flex flex-col min-h-screen">
           <ProjectsProvider>
+            <Header />
             <div className="flex-grow mt-7 md:mt-20">{children}</div>
           </ProjectsProvider>
           <Footer />

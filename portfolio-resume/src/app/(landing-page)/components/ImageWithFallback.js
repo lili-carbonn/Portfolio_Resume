@@ -24,46 +24,27 @@ const ImageWithFallback = ({
       processedSrc = src.url;
     }
     
-    // Check if the image URL is from the API
-    const isApiImage = typeof processedSrc === 'string' && (
-      processedSrc.startsWith('/api/') || 
-      processedSrc.includes('/api/media/')
-    );
-    
-    // For API images, use the API route for uploads with the full image
-    if (isApiImage) {
-      console.log('Original API image URL:', processedSrc);
+    // Simplify image path handling - just use the filename directly
+    if (typeof processedSrc === 'string') {
+      console.log('Original image URL:', processedSrc);
       
-      // Special handling for Example_Image_OS_Project.webp
-      if (processedSrc.includes('Example_Image_OS_Project')) {
-        processedSrc = `/uploads/Example_Image_OS_Project.webp`;
-        console.log('Using direct path for Example_Image_OS_Project:', processedSrc);
+      // Handle special cases
+      if (processedSrc.includes('20241225_160255')) {
+        processedSrc = '/20241225_160255.webp';
       }
-      // Special handling for embeddings_visualization.webp
-      else if (processedSrc.includes('embeddings_visualization')) {
-        processedSrc = `/uploads/embeddings_visualization.webp`;
-        console.log('Using direct path for embeddings_visualization:', processedSrc);
-      }
-      // Special handling for hero image
-      else if (processedSrc.includes('20241225_160255')) {
-        processedSrc = `/20241225_160255.jpg`;
-        console.log('Using direct path for hero image:', processedSrc);
-      }
-      // For other API images
-      else {
-        // Extract the filename from the API URL
+      // For API paths, extract just the filename
+      else if (processedSrc.includes('/api/') || processedSrc.includes('/api/media/')) {
         const filenameMatch = processedSrc.match(/\/([^\/]+)$/);
         if (filenameMatch && filenameMatch[1]) {
-          let filename = filenameMatch[1];
-          
-          // Remove any size suffixes like -150x150, -600x400, etc.
-          filename = filename.replace(/-\d+x\d+(\.\w+)$/, '$1');
-          
-          // Use the direct path to the uploads directory
-          processedSrc = `/uploads/${filename}`;
-          console.log('Using direct path for image:', processedSrc);
+          processedSrc = `/${filenameMatch[1]}`;
         }
       }
+      // Ensure path starts with a slash
+      else if (!processedSrc.startsWith('/')) {
+        processedSrc = `/${processedSrc}`;
+      }
+      
+      console.log('Using image path:', processedSrc);
     }
     
     setImgSrc(processedSrc);
@@ -80,6 +61,14 @@ const ImageWithFallback = ({
     console.error('Error loading image:', imgSrc);
     setError(true);
     setLoading(false);
+    
+    // If the image fails to load, try to use a fallback
+    if (imgSrc !== '/Orb_Example_Image.webp') {
+      console.log('Trying fallback image');
+      setError(false); // Reset error state
+      setLoading(true); // Show loading spinner again
+      setImgSrc('/Orb_Example_Image.webp');
+    }
   };
 
   return (
@@ -105,7 +94,7 @@ const ImageWithFallback = ({
         onLoad={handleLoad}
         onError={handleError}
         className={`z-10 ${loading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-        unoptimized={imgSrc.includes('Example_Image_OS_Project') || imgSrc.includes('embeddings_visualization')}
+        unoptimized={true}
         {...props}
       />
     </>

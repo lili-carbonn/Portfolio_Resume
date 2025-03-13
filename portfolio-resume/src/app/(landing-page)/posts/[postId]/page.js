@@ -80,34 +80,58 @@ const Page = async ({ params }) => {
     const post = posts.docs[0];
     console.log("Post data:", post);
 
+    // Determine special styling based on post type
+    const isAbout = post.type === "about";
+    const isContact = post.type === "contact";
+    
+    // Special styling classes based on post type
+    const pageBgClass = isAbout 
+      ? "bg-gradient-to-br from-purple-50 via-primary-50 to-amber-50" 
+      : isContact 
+        ? "bg-gradient-to-br from-amber-50 via-primary-50 to-purple-50"
+        : "bg-gradient-to-br from-primary-50 to-primary-100";
+    
+    // Animation classes
+    const titleAnimClass = "animate-fade-in-down";
+    const contentAnimClass = "animate-fade-in";
+    const imageAnimClass = "animate-scale-in";
+    
     return (
       <div className="w-full pt-16 md:pt-24">
         <div className="container mx-auto p-4 pb-12 sm:p-12">
-          <div className="bg-gradient-to-br from-primary-50 to-primary-100 border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8">
-            <h1 className="text-5xl font-bold mb-5 leading-normal text-center">{post.title}</h1>
-            <div className="prose max-w-none">
-            <SerializedRichText
-              className="payload-richtext"
-              data={post.content}
-            />
-          </div>
+          <div className={`${pageBgClass} border border-gray-200 shadow-lg rounded-lg overflow-hidden p-4 sm:p-6 md:p-8 transition-all duration-500 hover:shadow-xl`}>
+            <h1 className={`text-5xl font-bold mb-5 leading-normal text-center ${titleAnimClass}`}>{post.title}</h1>
+            
+            {/* Decorative elements based on post type */}
+            {isAbout && (
+              <div className="relative h-2 w-32 mx-auto mb-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-300 via-primary-400 to-amber-300 animate-gradient-x"></div>
+              </div>
+            )}
+            
+            {isContact && (
+              <div className="relative h-2 w-32 mx-auto mb-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-300 via-primary-400 to-purple-300 animate-gradient-x"></div>
+              </div>
+            )}
+            
+            <div className={`prose max-w-none ${contentAnimClass}`}>
+              <SerializedRichText
+                className="payload-richtext"
+                data={post.content}
+              />
+            </div>
           
-          {/* Display post image if available */}
-          {post.image && post.image.url && (
+          {/* Display post image only for about page */}
+          {post.type === "about" && (
             <div className="mt-8">
-              <div className="relative h-[400px] rounded-xl overflow-hidden border border-gray-300">
+              <div className={`relative h-[400px] transform transition-all duration-500 hover:scale-[1.02] ${imageAnimClass}`}>
                 <ImageWithFallback
-                  src={(() => {
-                    // Extract the filename from the URL
-                    const urlParts = post.image.url.split('/');
-                    const filename = urlParts[urlParts.length - 1];
-                    // Use the direct path to the uploads directory
-                    return `/uploads/${filename}`;
-                  })()}
-                  alt={post.image.alt || post.title}
+                  src="/20240725_133258-600x400.webp"
+                  alt={post.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 800px"
-                  className="object-cover w-auto h-auto"
+                  className="object-cover object-[25%_25%] w-auto h-auto"
                   priority
                   unoptimized={true}
                 />
@@ -115,25 +139,19 @@ const Page = async ({ params }) => {
             </div>
           )}
           
-          {/* Display card images if available */}
-          {post.cards && post.cards.length > 0 && (
+          {/* Display card images only for about page */}
+          {post.type === "about" && post.cards && post.cards.length > 0 && (
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
               {post.cards.map((card, index) => (
                 card.image && card.image.url && (
                   <div key={index} className="relative">
-                    <div className="relative h-[300px] rounded-xl overflow-hidden border border-gray-300">
+                    <div className={`relative h-[300px] transform transition-all duration-500 hover:scale-[1.02] ${imageAnimClass}`} style={{ animationDelay: `${index * 100 + 500}ms` }}>
                       <ImageWithFallback
-                        src={(() => {
-                          // Extract the filename from the URL
-                          const urlParts = card.image.url.split('/');
-                          const filename = urlParts[urlParts.length - 1];
-                          // Use the direct path to the uploads directory
-                          return `/uploads/${filename}`;
-                        })()}
+                        src="/20240725_133258-600x400.webp"
                         alt={card.image.alt || card.title || `Image ${index + 1}`}
                         fill
                         sizes="(max-width: 768px) 100vw, 400px"
-                        className="object-cover w-auto h-auto"
+                        className="object-cover object-[25%_25%] w-auto h-auto"
                         unoptimized={true}
                       />
                     </div>

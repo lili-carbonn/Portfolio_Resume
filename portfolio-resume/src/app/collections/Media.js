@@ -1,7 +1,7 @@
 const MediaCollection = {
   slug: 'media',
   upload: {
-    staticDir: 'uploads', // Stores files in the 'uploads' folder
+    staticDir: 'public', // Stores files in the media folder
     mimeTypes: ['image/*'], // Allows only images
     imageSizes: [
       {

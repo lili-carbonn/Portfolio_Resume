@@ -8,7 +8,7 @@ export async function GET(request, { params }) {
     const filePath = params.path.join('/');
     
     // Construct the full path to the file
-    const fullPath = path.join(process.cwd(), 'uploads', filePath);
+    const fullPath = path.join(process.cwd(), 'public', filePath);
     
     try {
       // Try to read the file
@@ -37,7 +37,7 @@ export async function GET(request, { params }) {
       if (filename.match(/-\d+x\d+\.\w+$/)) {
         const originalFilename = filename.replace(/-\d+x\d+(\.\w+)$/, '$1');
         const originalFilePath = path.join(dirname, originalFilename);
-        const originalFullPath = path.join(process.cwd(), 'uploads', originalFilePath);
+        const originalFullPath = path.join(process.cwd(), 'public', originalFilePath);
         
         try {
           // Try to read the original file

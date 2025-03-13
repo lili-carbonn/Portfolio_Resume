@@ -14,6 +14,9 @@ const Header = () => {
   // Set isMounted to true after component mounts
   useEffect(() => {
     setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
   }, []);
   
   const handleNavigation = (sectionId) => {
@@ -58,7 +61,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <ProjectsDropdown projects={projects} />
+              {isMounted && <ProjectsDropdown projects={projects} />}
             </li>
             <li>
               <Link

@@ -90,7 +90,7 @@ const HeroSection = () => {
         <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-lg animate-photo-container w-64 h-80 md:w-80 md:h-96">
           {/* Use a standard img tag for the hero image to avoid Next.js image optimization issues */}
           <img
-            src="/uploads/20241225_160255.webp"
+            src="/20241225_160255.webp"
             alt="Leala Carbonneau portrait"
             className="absolute inset-0 w-full h-full object-cover animate-photo"
             style={{ objectPosition: '70% 33%', transform: 'scale(1.5)' }}
@@ -98,15 +98,15 @@ const HeroSection = () => {
               console.error("Hero image failed to load:", e);
               e.target.onerror = null; // Prevent infinite error loop
               // Try different fallbacks
-              if (e.target.src.includes('/uploads/20241225_160255.webp')) {
+              if (e.target.src.includes('/20241225_160255.webp')) {
                 console.log("Trying fallback 1");
-                e.target.src = "/uploads/20241225_160255-600x400.webp";
-              } else if (e.target.src.includes('/uploads/20241225_160255-600x400.webp')) {
+                e.target.src = "/20241225_160255-600x400.webp";
+              } else if (e.target.src.includes('/20241225_160255-600x400.webp')) {
                 console.log("Trying fallback 2");
-                e.target.src = "/uploads/20241225_160255-1200x800.webp";
+                e.target.src = "/20241225_160255-1200x800.webp";
               } else {
                 console.log("Using placeholder");
-                e.target.src = "/uploads/Orb_Example_Image.webp";
+                e.target.src = "/Orb_Example_Image.webp";
               }
             }}
           />
