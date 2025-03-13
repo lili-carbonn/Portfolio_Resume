@@ -92,7 +92,7 @@ const HeroSection = () => {
           <img
             src="/uploads/20241225_160255.webp"
             alt="Leala Carbonneau portrait"
-            className="absolute inset-0 w-full h-full object-contain animate-photo"
+            className="absolute inset-0 w-full h-full object-cover animate-photo"
             style={{ objectPosition: '70% 33%', transform: 'scale(1.5)' }}
             onError={(e) => {
               console.error("Hero image failed to load:", e);

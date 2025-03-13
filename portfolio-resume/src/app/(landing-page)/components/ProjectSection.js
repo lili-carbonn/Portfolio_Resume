@@ -13,7 +13,7 @@ const fallbackProjects = [
     "tags": ["Graph Neural Networks", "Machine Learning", "Social Network Analysis", "Python", "PyTorch Geometric", "Sentence-BERT"],
     "description": "This project implements a graph-based machine learning approach to identify influential users on Yelp.",
     "fullDescription": "This project implements a graph-based machine learning approach to identify influential users on Yelp. Users and businesses are represented as nodes, with reviews forming edges in a heterogeneous graph. The model leverages Sentence-BERT embeddings for text analysis, network centrality metrics, and sentiment features. A Graph Convolutional Network (GCN) serves as a baseline, while an enhanced Graph Attention Network (GAT) improves accuracy by incorporating multi-head attention. The study demonstrates that integrating multiple feature types significantly enhances prediction accuracy, reaching 81% in classifying influential users.",
-    "image": "/uploads/Screenshot 2025-03-07 134115.png",
+    "image": "/uploads/embeddings_visualization.webp",
     "techStack": ["Python", "PyTorch", "PyTorch Geometric", "Sentence-BERT", "NetworkX", "Scikit-learn"],
     "link": "https://github.com/lili-carbonn/yelp-dataset-challenge"
   },
