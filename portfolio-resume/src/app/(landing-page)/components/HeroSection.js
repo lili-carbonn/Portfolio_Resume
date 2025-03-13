@@ -90,14 +90,24 @@ const HeroSection = () => {
         <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-lg animate-photo-container w-64 h-80 md:w-80 md:h-96">
           {/* Use a standard img tag for the hero image to avoid Next.js image optimization issues */}
           <img
-            src="/20241225_160255.jpg"
+            src="/uploads/20241225_160255.webp"
             alt="Leala Carbonneau portrait"
             className="absolute inset-0 w-full h-full object-contain animate-photo"
             style={{ objectPosition: '70% 33%', transform: 'scale(1.5)' }}
             onError={(e) => {
               console.error("Hero image failed to load:", e);
               e.target.onerror = null; // Prevent infinite error loop
-              e.target.src = "/placeholders/placeholder-project.jpg";
+              // Try different fallbacks
+              if (e.target.src.includes('/uploads/20241225_160255.webp')) {
+                console.log("Trying fallback 1");
+                e.target.src = "/uploads/20241225_160255-600x400.webp";
+              } else if (e.target.src.includes('/uploads/20241225_160255-600x400.webp')) {
+                console.log("Trying fallback 2");
+                e.target.src = "/uploads/20241225_160255-1200x800.webp";
+              } else {
+                console.log("Using placeholder");
+                e.target.src = "/uploads/Orb_Example_Image.webp";
+              }
             }}
           />
           <div className="absolute inset-0 bg-primary-500/20 animate-photo-glow"></div>

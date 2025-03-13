@@ -105,18 +105,28 @@ const ProjectPage = async ({ params }) => {
     }
 
     // Get the image URL - use the API URL directly
-    let imageUrl = '/placeholder-project.jpg';
+    let imageUrl = '/uploads/Orb_Example_Image.webp'; // Default fallback
     
     // First try to get the image from the card
     if (project.cards && project.cards.length > 0 && project.cards[0].image) {
       if (project.cards[0].image.url) {
-        imageUrl = project.cards[0].image.url;
+        // Extract the filename from the URL
+        const urlParts = project.cards[0].image.url.split('/');
+        const filename = urlParts[urlParts.length - 1];
+        
+        // Use the direct path to the uploads directory
+        imageUrl = `/uploads/${filename}`;
       }
     } 
     // If no card image, try the post image
     else if (project.image) {
       if (project.image.url) {
-        imageUrl = project.image.url;
+        // Extract the filename from the URL
+        const urlParts = project.image.url.split('/');
+        const filename = urlParts[urlParts.length - 1];
+        
+        // Use the direct path to the uploads directory
+        imageUrl = `/uploads/${filename}`;
       }
     }
     

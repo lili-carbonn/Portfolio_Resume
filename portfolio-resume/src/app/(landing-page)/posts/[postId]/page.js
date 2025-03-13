@@ -97,12 +97,19 @@ const Page = async ({ params }) => {
             <div className="mt-8">
               <div className="relative h-[400px] rounded-xl overflow-hidden border border-gray-300">
                 <ImageWithFallback
-                  src={post.image.url}
+                  src={(() => {
+                    // Extract the filename from the URL
+                    const urlParts = post.image.url.split('/');
+                    const filename = urlParts[urlParts.length - 1];
+                    // Use the direct path to the uploads directory
+                    return `/uploads/${filename}`;
+                  })()}
                   alt={post.image.alt || post.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 800px"
                   className="object-cover w-auto h-auto"
                   priority
+                  unoptimized={true}
                 />
               </div>
             </div>
@@ -116,11 +123,18 @@ const Page = async ({ params }) => {
                   <div key={index} className="relative">
                     <div className="relative h-[300px] rounded-xl overflow-hidden border border-gray-300">
                       <ImageWithFallback
-                        src={card.image.url}
+                        src={(() => {
+                          // Extract the filename from the URL
+                          const urlParts = card.image.url.split('/');
+                          const filename = urlParts[urlParts.length - 1];
+                          // Use the direct path to the uploads directory
+                          return `/uploads/${filename}`;
+                        })()}
                         alt={card.image.alt || card.title || `Image ${index + 1}`}
                         fill
                         sizes="(max-width: 768px) 100vw, 400px"
                         className="object-cover w-auto h-auto"
+                        unoptimized={true}
                       />
                     </div>
                     {card.title && (

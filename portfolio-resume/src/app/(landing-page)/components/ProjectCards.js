@@ -26,7 +26,9 @@ const ProjectCard = ({ project, index }) => {
         {project.image && (
           <div className="mb-1 overflow-hidden rounded-lg h-36 w-full flex justify-center items-center bg-gray-100 relative">
             <ImageWithFallback 
-              src={project.image} 
+              src={project.image.startsWith('/') && !project.image.startsWith('/uploads/') 
+                ? `/uploads${project.image}` // Add uploads prefix if it's a relative path without uploads
+                : project.image} // Otherwise use as is
               alt={project.title || "Project image"} 
               width={240}
               height={135}
@@ -36,6 +38,17 @@ const ProjectCard = ({ project, index }) => {
               priority // Prioritize loading these images
               loading="eager"
               unoptimized={true}
+              onError={(e) => {
+                console.error("Error loading image:", e.target.src);
+                // Try different fallbacks
+                if (!e.target.src.includes('/uploads/')) {
+                  console.log("Trying with uploads prefix");
+                  e.target.src = `/uploads/${e.target.src.split('/').pop()}`;
+                } else {
+                  console.log("Using default fallback");
+                  e.target.src = "/uploads/Orb_Example_Image.webp";
+                }
+              }}
             />
           </div>
         )}
